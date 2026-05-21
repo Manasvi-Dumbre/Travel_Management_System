@@ -11,7 +11,7 @@ app = Flask(__name__)
 app.secret_key = 'your-secret-key-here'  # Change this to a secure key
 app.config['UPLOAD_FOLDER'] = 'static/hotel_images'
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
-socketio = SocketIO(app)
+socketio = SocketIO(app, async_mode='threading')
 
 # Add these constants after app initialization
 AIRPORTS = {
