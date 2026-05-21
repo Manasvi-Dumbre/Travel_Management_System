@@ -761,4 +761,9 @@ def transport_results(mode):
     return redirect(url_for('transport_search', mode=mode))
 
 if __name__ == '__main__':
-    socketio.run(app, host='0.0.0.0', debug=True)
+    socketio.run(
+        app,
+        host='0.0.0.0',
+        port=int(os.environ.get("PORT", 5000)),
+        allow_unsafe_werkzeug=True
+    )
