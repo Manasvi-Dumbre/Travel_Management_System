@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+
+{% block title %}Public Chat{% endblock %}
+
+{% block content %}
+<div class="chat-container">
+    <h2>Public Chat Room</h2>
+    <div class="chat-box" id="chatBox">
+        {% for msg in messages %}
+        <div class="message">
+            <div class="message-header">
+                <span class="username">{{ msg[1] }}</span>
+                <span class="timestamp">{{ msg[3] }}</span>
+            </div>
+            <div class="message-content">{{ msg[2] }}</div>
+        </div>
+        {% endfor %}
+    </div>
+    <form id="messageForm" class="message-form">
+        <input type="text" id="messageInput" placeholder="Type your message..." required>
+        <button type="submit">Send</button>
+    </form>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
+<script>
+const socket = io();
+const chatBox = document.getElementById('chatBox');
+const messageForm = document.getElementById('messageForm');
+const messageInput = document.getElementById('messageInput');
+
+messageForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const message = messageInput.value.trim();
+    if (message) {
+        socket.emit('send_message', { message: message });
+        messageInput.value = '';
+    }
+});
+
+socket.on('new_message', (data) => {
+    const messageDiv = document.createElement('div');
+    messageDiv.className = 'message';
+    messageDiv.innerHTML = `
+        <div class="message-header">
+            <span class="username">${data.username}</span>
+            <span class="timestamp">${data.timestamp}</span>
+        </div>
+        <div class="message-content">${data.message}</div>
+    `;
+    chatBox.appendChild(messageDiv);
+    chatBox.scrollTop = chatBox.scrollHeight;
+});
+
+// Auto scroll to bottom on load
+chatBox.scrollTop = chatBox.scrollHeight;
+</script>
+{% endblock %}

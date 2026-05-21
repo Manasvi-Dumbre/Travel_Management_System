@@ -1,0 +1,112 @@
+{% extends "base.html" %}
+
+{% block title %}Currency Converter{% endblock %}
+
+{% block content %}
+<div class="converter-container">
+    <h2>Currency Converter</h2>
+    <div class="converter-box">
+        <div class="conversion-form">
+            <div class="converter-content">
+                <div class="amount-input">
+                    <input type="number" id="amount" placeholder="Enter amount" min="0" step="0.01">
+                </div>
+                <div class="currency-selects">
+                    <select id="fromCurrency" class="currency-select">
+                        <option value="INR" selected>Indian Rupee (₹)</option>
+                        <option value="USD">US Dollar ($)</option>
+                        <option value="EUR">Euro (€)</option>
+                        <option value="GBP">British Pound (£)</option>
+                        <option value="AUD">Australian Dollar (A$)</option>
+                        <option value="CAD">Canadian Dollar (C$)</option>
+                        <option value="SGD">Singapore Dollar (S$)</option>
+                        <option value="JPY">Japanese Yen (¥)</option>
+                        <option value="CHF">Swiss Franc (Fr)</option>
+                        <option value="AED">UAE Dirham (د.إ)</option>
+                        <option value="CNY">Chinese Yuan (¥)</option>
+                        <option value="MYR">Malaysian Ringgit (RM)</option>
+                    </select>
+                    <div class="swap-icon" onclick="swapCurrencies()">⇄</div>
+                    <select id="toCurrency" class="currency-select">
+                        <option value="USD" selected>US Dollar ($)</option>
+                        <option value="INR">Indian Rupee (₹)</option>
+                        <option value="EUR">Euro (€)</option>
+                        <option value="GBP">British Pound (£)</option>
+                        <option value="AUD">Australian Dollar (A$)</option>
+                        <option value="CAD">Canadian Dollar (C$)</option>
+                        <option value="SGD">Singapore Dollar (S$)</option>
+                        <option value="JPY">Japanese Yen (¥)</option>
+                        <option value="CHF">Swiss Franc (Fr)</option>
+                        <option value="AED">UAE Dirham (د.إ)</option>
+                        <option value="CNY">Chinese Yuan (¥)</option>
+                        <option value="MYR">Malaysian Ringgit (RM)</option>
+                    </select>
+                </div>
+                <button onclick="convertCurrency()" class="convert-btn">Convert Currency</button>
+            </div>
+            <div id="result" class="result">
+                <!-- Result will appear here -->
+            </div>
+        </div>
+        <div class="exchange-rates">
+            <h3>Live Exchange Rates</h3>
+            <div class="rates-scroll">
+                <div class="rates-track">
+                    <div class="rate-item">1 USD = ₹83.25 INR</div>
+                    <div class="rate-item">1 USD = €0.92 EUR</div>
+                    <div class="rate-item">1 USD = £0.79 GBP</div>
+                    <div class="rate-item">1 USD = A$1.52 AUD</div>
+                    <div class="rate-item">1 USD = C$1.35 CAD</div>
+                    <div class="rate-item">1 USD = S$1.34 SGD</div>
+                    <div class="rate-item">1 USD = ¥147.50 JPY</div>
+                    <div class="rate-item">1 USD = Fr0.88 CHF</div>
+                    <!-- Duplicate for smooth infinite scroll -->
+                    <div class="rate-item">1 USD = ₹83.25 INR</div>
+                    <div class="rate-item">1 USD = €0.92 EUR</div>
+                    <div class="rate-item">1 USD = £0.79 GBP</div>
+                    <div class="rate-item">1 USD = A$1.52 AUD</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+const rates = {
+    'INR': 83.25,
+    'USD': 1,
+    'EUR': 0.92,
+    'GBP': 0.79,
+    'AUD': 1.52,
+    'CAD': 1.35,
+    'SGD': 1.34,
+    'JPY': 147.50,
+    'CHF': 0.88,
+    'AED': 3.67,
+    'CNY': 7.15,
+    'MYR': 4.65
+};
+
+function convertCurrency() {
+    const amount = document.getElementById('amount').value;
+    const from = document.getElementById('fromCurrency').value;
+    const to = document.getElementById('toCurrency').value;
+    
+    // Convert to USD first, then to target currency
+    const inUSD = amount / rates[from];
+    const result = inUSD * rates[to];
+    
+    document.getElementById('result').innerHTML = 
+        `${amount} ${from} = ${result.toFixed(2)} ${to}`;
+}
+
+function swapCurrencies() {
+    const fromSelect = document.getElementById('fromCurrency');
+    const toSelect = document.getElementById('toCurrency');
+    const temp = fromSelect.value;
+    fromSelect.value = toSelect.value;
+    toSelect.value = temp;
+    convertCurrency();
+}
+</script>
+{% endblock %}

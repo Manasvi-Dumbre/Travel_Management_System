@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block title %}Manage Bookings{% endblock %}
+
+{% block content %}
+<div class="admin-container">
+    {% include 'admin_nav.html' %}
+    <div class="admin-content">
+        <h2>Recent Bookings</h2>
+        {% if bookings %}
+            <div class="bookings-grid">
+                {% for booking in bookings %}
+                <div class="booking-card">
+                    <div class="booking-header">
+                        <span class="booking-id">#{{ booking[0] }}</span>
+                        <span class="booking-date">{{ booking[1] }}</span>
+                    </div>
+                    <div class="booking-details">
+                        <p><strong>Customer:</strong> {{ booking[2] }}</p>
+                        <p><strong>Type:</strong> {{ booking[3]|title }}</p>
+                        <p><strong>Item:</strong> {{ booking[4] }}</p>
+                        <p><strong>Details:</strong> {{ booking[5] }}</p>
+                        <p><strong>Quantity:</strong> {{ booking[6] }}</p>
+                        <p><strong>Price:</strong> ₹{{ "%.2f"|format(booking[7]) }}</p>
+                        <p><strong>Total:</strong> ₹{{ "%.2f"|format(booking[7] * booking[6]) }}</p>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p class="no-bookings">No bookings found</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

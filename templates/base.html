@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Travel Booking - {% block title %}{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <nav>
+        <div class="nav-links">
+            <a href="{{ url_for('home') }}">Home</a>
+            {% if session.user_id %}
+                <a href="{{ url_for('search', item_type='hotels') }}">Hotels</a>
+                <a href="{{ url_for('search', item_type='flights') }}">Flights</a>
+                <a href="{{ url_for('search', item_type='trains') }}">Trains</a>
+                <a href="{{ url_for('view_cart') }}">Cart</a>
+                <a href="{{ url_for('orders') }}">My Orders</a>
+                {% if session.is_admin %}
+                    <a href="{{ url_for('admin') }}">Admin Panel</a>
+                {% endif %}
+                <a href="{{ url_for('currency_converter') }}">Currency Converter</a>
+                <a href="{{ url_for('translator') }}">Translator</a>
+                <a href="{{ url_for('chat') }}">Public Chat</a>
+                <a href="{{ url_for('logout') }}">Logout</a>
+            {% else %}
+                <a href="{{ url_for('login') }}">Login</a>
+                <a href="{{ url_for('register') }}">Register</a>
+            {% endif %}
+        </div>
+    </nav>
+    
+    <div class="container">
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="flash">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+        
+        {% block content %}{% endblock %}
+    </div>
+</body>
+</html>

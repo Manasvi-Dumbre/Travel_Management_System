@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block title %}Search {{ mode|title }}{% endblock %}
+
+{% block content %}
+<div class="transport-search">
+    <h2>Search {{ mode|title }}</h2>
+    
+    <form action="{{ url_for('transport_results', mode=mode) }}" method="get" class="search-form">
+        <div class="form-group">
+            <label>From</label>
+            <select name="origin" required>
+                <option value="">Select Origin</option>
+                {% for code, info in locations.items() %}
+                    <option value="{{ code }}">{{ info.name }} ({{ code }})</option>
+                {% endfor %}
+            </select>
+        </div>
+        
+        <div class="form-group">
+            <label>To</label>
+            <select name="destination" required>
+                <option value="">Select Destination</option>
+                {% for code, info in locations.items() %}
+                    <option value="{{ code }}">{{ info.name }} ({{ code }})</option>
+                {% endfor %}
+            </select>
+        </div>
+        
+        <button type="submit">Search {{ mode|title }}</button>
+    </form>
+</div>
+{% endblock %}

@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block title %}Search Results{% endblock %}
+
+{% block content %}
+<div class="search-container">
+    <h2>Search Results</h2>
+    <div class="results-grid">
+        {% for hotel in results %}
+            <div class="hotel-card">
+                {% if hotel[5] %}
+                    <img src="{{ url_for('static', filename=hotel[5]) }}" alt="{{ hotel[1] }}" class="hotel-image">
+                {% endif %}
+                <div class="hotel-info">
+                    <h3>{{ hotel[1] }}</h3>
+                    <p>Location: {{ hotel[2] }}</p>
+                    <p class="price">₹{{ "%.2f"|format(hotel[3]) }} per night</p>
+                    <p>Available Rooms: {{ hotel[4] }}</p>
+                    {% if session.get('user_id') %}
+                        <a href="{{ url_for('add_to_cart', item_type='hotels', item_id=hotel[0]) }}" 
+                           class="btn">Book Now</a>
+                    {% endif %}
+                </div>
+            </div>
+        {% else %}
+            <p class="no-results">No hotels found matching your search.</p>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

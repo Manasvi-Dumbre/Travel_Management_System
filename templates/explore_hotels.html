@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block title %}Explore Hotels{% endblock %}
+
+{% block content %}
+<div class="explore-hotels">
+    <h2>Available Hotels</h2>
+    
+    <div class="search-bar">
+        <input type="text" id="hotelSearch" placeholder="Search hotels by name or location..." onkeyup="filterHotels()">
+    </div>
+    
+    <div class="hotels-grid">
+        {% for hotel in hotels %}
+        <div class="hotel-card">
+            {% if hotel[5] %}
+            <img src="{{ url_for('static', filename=hotel[5]) }}" alt="{{ hotel[1] }}" class="hotel-image">
+            {% endif %}
+            <div class="hotel-info">
+                <h3>{{ hotel[1] }}</h3>
+                <p><i class="fas fa-map-marker-alt"></i> {{ hotel[2] }}</p>
+                <p class="price">₹{{ "%.2f"|format(hotel[3]) }} per night</p>
+                <p>Available Rooms: {{ hotel[4] }}</p>
+                <a href="{{ url_for('add_to_cart', item_type='hotels', item_id=hotel[0]) }}" 
+                   class="btn">Book Now</a>
+            </div>
+        </div>
+        {% else %}
+        <p>No hotels available at the moment.</p>
+        {% endfor %}
+    </div>
+</div>
+
+<script>
+function filterHotels() {
+    const input = document.getElementById('hotelSearch');
+    const filter = input.value.toLowerCase();
+    const cards = document.getElementsByClassName('hotel-card');
+
+    for (let card of cards) {
+        const name = card.getElementsByTagName('h3')[0].textContent.toLowerCase();
+        const location = card.getElementsByTagName('p')[0].textContent.toLowerCase();
+        if (name.includes(filter) || location.includes(filter)) {
+            card.style.display = "";
+        } else {
+            card.style.display = "none";
+        }
+    }
+}
+</script>
+{% endblock %}

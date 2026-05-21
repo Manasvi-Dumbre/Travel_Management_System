@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+
+{% block title %}Admin Panel{% endblock %}
+
+{% block content %}
+<div class="admin-container">
+    {% include 'admin_nav.html' %}
+    <div class="admin-content">
+        {% if item_type == 'hotels' %}
+            <div class="section">
+                <h3>Add New Hotel</h3>
+                <form action="{{ url_for('manage_items', item_type='hotels') }}" method="post" enctype="multipart/form-data">
+                    <div class="form-grid">
+                        <input type="text" name="name" placeholder="Hotel name" required>
+                        <input type="text" name="location" placeholder="Location" required>
+                        <input type="number" name="price" placeholder="Price per night" required>
+                        <input type="number" name="available" placeholder="Available rooms" required>
+                        <input type="file" name="hotel_image" accept="image/*" required>
+                        <button type="submit">Add Hotel</button>
+                    </div>
+                </form>
+            </div>
+        {% endif %}
+
+        {% if items %}
+            <div class="items-list">
+                <h3>{{ item_type|title if item_type else 'Overview' }}</h3>
+                {% for item in items %}
+                    <div class="item-card">
+                        {% if item_type == 'hotels' and item[5] %}
+                            <img src="{{ url_for('static', filename=item[5]) }}" alt="{{ item[1] }}" class="item-image">
+                        {% endif %}
+                        <div class="item-info">
+                            <h4>{{ item[1] }}</h4>
+                            {% if item_type == 'hotels' %}
+                                <p>Location: {{ item[2] }}</p>
+                                <p>Price: ₹{{ "%.2f"|format(item[3]) }}/night</p>
+                                <p>Available Rooms: {{ item[4] }}</p>
+                            {% else %}
+                                <p>{{ item[2] }} to {{ item[3] }}</p>
+                                <p>Price: ₹{{ "%.2f"|format(item[4]) }}</p>
+                                <p>Available Seats: {{ item[5] }}</p>
+                            {% endif %}
+                            <div class="actions">
+                                <a href="{{ url_for('delete_item', item_type=item_type, item_id=item[0]) }}" 
+                                   class="delete-btn" onclick="return confirm('Are you sure you want to delete this item?')">
+                                    Delete
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        {% if bookings %}
+            <div class="recent-bookings">
+                <h3>Recent Bookings</h3>
+                <div class="bookings-list">
+                    {% for booking in bookings %}
+                        <div class="booking-card">
+                            <p>Booking #{{ booking[0] }}</p>
+                            <p>User: {{ booking[7] }}</p>
+                            <p>Item: {{ booking[8] }}</p>
+                            <p>Type: {{ booking[2] }}</p>
+                            <p>Quantity: {{ booking[4] }}</p>
+                            <p>Date: {{ booking[5] }}</p>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block title %}My Orders{% endblock %}
+
+{% block content %}
+<div class="orders-container">
+    <h2>My Orders</h2>
+    
+    {% if orders %}
+        <div class="orders-list">
+            {% for order in orders %}
+                <div class="order-card">
+                    <h3>{{ order[6] }}</h3>
+                    <p class="order-type">Type: {{ order[2] }}</p>
+                    <p class="order-location">{{ order[7] }}</p>
+                    <p class="order-details">
+                        Quantity: {{ order[4] }}<br>
+                        Price per item: ₹{{ "%.2f"|format(order[8]) }}<br>
+                        Total: ₹{{ "%.2f"|format(order[8] * order[4]) }}
+                    </p>
+                    <p class="order-date">Booked on: {{ order[5] }}</p>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p class="no-orders">No orders found.</p>
+    {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+<div class="hero">
+    <h1>Welcome to Travel Booking</h1>
+    
+    <div class="search-options">
+        <div class="search-card">
+            <h2>Hotels</h2>
+            <a href="{{ url_for('explore_hotels') }}" class="btn">Explore Hotels</a>
+        </div>
+        
+        <div class="search-card">
+            <h2>Flights</h2>
+            <a href="{{ url_for('transport_search', mode='flights') }}" class="btn">Book Flights</a>
+        </div>
+        
+        <div class="search-card">
+            <h2>Trains</h2>
+            <a href="{{ url_for('transport_search', mode='trains') }}" class="btn">Book Trains</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

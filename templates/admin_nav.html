@@ -1,0 +1,35 @@
+<div class="admin-sidebar">
+    <h2>Admin Dashboard</h2>
+    <ul class="admin-nav">
+        <li>
+            <a href="{{ url_for('admin') }}" 
+               class="{% if request.endpoint == 'admin' %}active{% endif %}">
+                Dashboard
+            </a>
+        </li>
+        <li>
+            <a href="{{ url_for('manage_items', item_type='hotels') }}" 
+               class="{% if item_type == 'hotels' %}active{% endif %}">
+                Manage Hotels
+            </a>
+        </li>
+        <li>
+            <a href="{{ url_for('manage_hotel_bookings') }}" 
+               class="{% if request.endpoint == 'manage_hotel_bookings' %}active{% endif %}">
+                Hotel Bookings
+            </a>
+        </li>
+        <li>
+            <a href="{{ url_for('manage_bookings') }}" 
+               class="{% if request.endpoint == 'manage_bookings' %}active{% endif %}">
+                All Bookings
+            </a>
+        </li>
+        <li>
+            <a href="{{ url_for('manage_users') }}" 
+               class="{% if request.endpoint == 'manage_users' %}active{% endif %}">
+                Manage Users
+            </a>
+        </li>
+    </ul>
+</div>

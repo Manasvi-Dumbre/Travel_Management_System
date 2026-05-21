@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block title %}{{ mode|title }} Results{% endblock %}
+
+{% block content %}
+<div class="transport-results">
+    <h2>Available {{ mode|title }}</h2>
+    
+    <div class="result-card">
+        <h3>{{ result.number }}</h3>
+        <div class="route-info">
+            <p><strong>From:</strong> {{ result.origin }}</p>
+            <p><strong>To:</strong> {{ result.destination }}</p>
+        </div>
+        <div class="price-info">
+            <p><strong>Price:</strong> ₹{{ "%.2f"|format(result.price) }}</p>
+            <p><strong>Available Seats:</strong> {{ result.available_seats }}</p>
+        </div>
+        
+        <a href="{{ url_for('add_to_cart', item_type=mode, item_id=result.id) }}" 
+           class="btn">Add to Cart</a>
+    </div>
+    
+    <a href="{{ url_for('transport_search', mode=mode) }}" class="btn secondary">New Search</a>
+</div>
+{% endblock %}
